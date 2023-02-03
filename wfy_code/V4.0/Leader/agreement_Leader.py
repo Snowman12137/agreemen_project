@@ -312,6 +312,7 @@ class Massage_Node:
                 if MAC_test != list_new[4]:
                     print("MAC不对")
                     exit()
+                    #12312
             self.massage_con[2] = str(datetime.datetime.now())
             self.massage_con[3] = str(int(random.random()*10000))
             return 1
