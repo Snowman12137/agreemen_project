@@ -191,23 +191,23 @@ class Massage_AS_Leader:
         massage1 = self.get_list()
         sk.send("AS_Lead+data".encode())
         sleep(1)
-        print("第一次握手发送消息：",massage1)
+        #print("第一次握手发送消息：",massage1)
         sk.send(str(massage1).encode())
         #第二次接收
         data2 = sk.recv(1024)
         temp = data2.decode('utf-8')
-        print("第二次握手接收消息：",temp)
+        #print("第二次握手接收消息：",temp)
         a = self.ju_massage(temp)
         if a is False :
             exit()
         #第三次发送
         massage3 = self.get_list()
-        print("第三次握手发送消息：",massage3)
+        #print("第三次握手发送消息：",massage3)
         sk.send(str(massage3).encode('utf-8'))
         #收到确认信息
         data_OK = sk.recv(1024)
         temp = data_OK.decode('utf-8')
-        print(temp)
+        #print(temp)
         if temp == "OK":
             return self.new_key()
 
@@ -282,11 +282,13 @@ class Massage_Node:
         hash_sha256 = hash_sha256.copy()
         hash_sha256.update(str(temp).encode('utf-8'))'''
         MAC = hash_msg(str(temp))
+        print(temp)
         return MAC
 
     # 验证消息的准确性
     def ju_massage(self, string: str):
         list_new = str_to_string(string)
+        print(list_new)
         # 检验发送人员是否有误
         if ~(self.massage_con[1] == "") or (list_new[1] == self.massage_con[0] and list_new[0] == self.massage_con[1]):
             new_string = ""  # 字符串中含有毫秒串，datatime不能识别，所以把毫秒部分删去
@@ -338,19 +340,19 @@ class Massage_Node:
     def massage_AS(self):
         conn = self.conn
         data1 = conn.recv(1024).decode()
-        print("第一次握手接收消息",data1)
+        #print("第一次握手接收消息",data1)
         a = self.ju_massage(data1)
         print("返回结果",a)
         if a is False:
             exit()
         # 第二次握手(发送)
         massage2 = self.get_list()
-        print("第二次握手发送消息：",massage2)
+        #print("第二次握手发送消息：",massage2)
         conn.send(str(massage2).encode('utf-8'))
         # 第三次握手(接收)
         data3 = conn.recv(1024)
         temp =data3.decode('utf-8')
-        print("第三次握手发送消息：",temp)
+        #print("第三次握手发送消息：",temp)
         a = self.ju_massage(temp)
         if a is False:
             exit()
@@ -364,7 +366,7 @@ class Massage_Node:
 def AS_Lead_First(IDLead,conn,K:dict):
     #第一次握手(接收)
     print("运行到AS_Lead_First")
-    massage = Massage_Node(IDLead,conn,K=K["Leader_AS"])
+    massage = Massage_Node(IDLead,conn,K=K["Node_Leader"])
     massage.massage_AS()
     ID , key = massage.new_key()
     temp = [key[:32],key[32:]]

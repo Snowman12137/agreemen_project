@@ -167,18 +167,18 @@ class Massage_AS_Leader:
     def massage_AS(self):
         conn = self.conn
         data1 = conn.recv(1024).decode()
-        print("第一次握手接收消息",data1)
+        #print("第一次握手接收消息",data1)
         a = self.ju_massage(data1)
         if a is False:
             exit()
         # 第二次握手(发送)
         massage2 = self.get_list()
-        print("第二次握手发送消息：",massage2)
+        #print("第二次握手发送消息：",massage2)
         conn.send(str(massage2).encode('utf-8'))
         # 第三次握手(接收)
         data3 = conn.recv(1024)
         temp =data3.decode('utf-8')
-        print("第三次握手发送消息：",temp)
+        #print("第三次握手发送消息：",temp)
         a = self.ju_massage(temp)
         if a is False:
             exit()
@@ -230,8 +230,8 @@ def AS_Node_connect(IDas,IDLead,conn:socket,connet_key,K,raw_data):
                 #MAC_temp = massage.MAC_return()
                 temp = [i[0],IDLead,i[1],i[2]]
                 MAC_temp = hash_msg(str(temp) + K["AS_"+temp[0]] )
-                print(str(temp) + K["AS_"+temp[0]])
-                print(MAC_temp,":"+i[0]+"的MAC值")
+                #print(str(temp) + K["AS_"+temp[0]])
+                #print(MAC_temp,":"+i[0]+"的MAC值")
                 MAC_xor ^= int(MAC_temp,16)
             if str(hex(MAC_xor)) ==list_new[3]:
                 #4.检验MAC_L

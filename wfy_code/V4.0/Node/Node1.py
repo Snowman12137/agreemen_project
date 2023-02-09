@@ -54,7 +54,7 @@ class Node:
                 key = self.key
                 rec_ID[IDas] =  [key[:32],key[32:]]
                 break
-        print("finish")
+        print(IDNode + "与IDas秘钥协商已完成为"+str(rec_ID))
         #测试Lead_与Node的协议
         massage = Massage_Node_Leader(IDNode,self.request,Other=IDLead2,K=K["Node_Leader"])
         a1,a2 = massage.massage_Lead()

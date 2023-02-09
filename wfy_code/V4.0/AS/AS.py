@@ -33,7 +33,7 @@ def AS_Lead(conn):
     if not a:
         print("协商有误")
     rec_ID[IDLead] = temp
-    print("完成秘钥协商：秘钥为:",rec_ID[IDLead]) 
+    print("AS_Lead完成秘钥协商：秘钥为:",rec_ID[IDLead]) 
 
 
 class MyServer(socketserver.BaseRequestHandler):

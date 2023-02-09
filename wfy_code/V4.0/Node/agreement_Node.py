@@ -49,7 +49,7 @@ class Message_Node_AS():
         self.massage_con.append(r)
         self.r = r
         self.massage_con.append(hash_msg(str(self.massage_con)+str(self.K))) 
-        print(str(self.massage_con)+str(self.K))
+        #print(str(self.massage_con)+str(self.K))
         self.s = s
     
 
@@ -91,11 +91,15 @@ def basic_handle(data):
     agreement = ""
     a = 0
     for i in range(20):
-        if data[i] !="+":
-            agreement+= data[i]
-        else :
-            a = i
-            break
+        try:
+            if data[i] !="+":
+                agreement+= data[i]
+            else :
+                a = i
+                break
+        except Exception as e:
+                print("错误为",e,"传输的数据为",data)
+                break
     data = data[a+1:]
     return data,agreement
 
@@ -174,6 +178,7 @@ class Massage_Node_Leader:
         hash_sha256 = hash_sha256.copy()
         hash_sha256.update(str(temp).encode('utf-8'))'''
         MAC  = hash_msg(str(temp))
+        #print(temp)
         return MAC  
 
 
@@ -236,18 +241,19 @@ class Massage_Node_Leader:
         massage1 = self.get_list()
         sk.send("Node_Leader+data".encode())
         sleep(1)
-        print("第一次握手发送消息：",massage1)
+        #print("第一次握手发送消息：",massage1)
         sk.send(str(massage1).encode())
         #第二次接收
+        print("运行到这里")
         data2 = sk.recv(1024)
         temp = data2.decode('utf-8')
-        print("第二次握手接收消息：",temp)
+        #print("第二次握手接收消息：",temp)
         a = self.ju_massage(temp)
         if a is False :
             exit()
         #第三次发送
         massage3 = self.get_list()
-        print("第三次握手发送消息：",massage3)
+        #print("第三次握手发送消息：",massage3)
         sk.send(str(massage3).encode('utf-8'))
         #收到确认信息
         data_OK = sk.recv(1024)

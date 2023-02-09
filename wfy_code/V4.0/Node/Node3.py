@@ -54,10 +54,18 @@ class Node:
         self.massage = Message_Node_AS(IDNode,sk,Send=IDLead2,K=K["AS_Node3"])
         self.massage.main_Node()
         while True:
+            sleep(1)
             if self.key!= "":
                 key = self.key
                 rec_ID[IDas] =  [key[:32],key[32:]]
                 break
+        print(IDNode + "与IDas秘钥协商已完成为"+str(rec_ID))
+        #测试Lead_与Node的协议
+        massage = Massage_Node_Leader(IDNode,self.request,Other=IDLead2,K=K["Node_Leader"])
+        a1,a2 = massage.massage_Lead()
+        #[CK,IK]
+        rec_ID[a1] = [a2[:32],a2[32:]]
+        print("协商秘钥为：",rec_ID)
 
     def recieveData(self):
         while True:

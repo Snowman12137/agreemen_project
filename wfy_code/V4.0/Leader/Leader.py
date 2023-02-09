@@ -46,7 +46,7 @@ class MyServer(socketserver.BaseRequestHandler):
             IDNode = self.IDNode
             if receve_massage[IDNode] != "" :
                 temp = receve_massage[IDNode]
-                print("temp为：",temp)
+                #print("temp为：",temp)
                 receve_massage[IDNode] = ""
                 conn.send(("AS_Node+"+str(temp)).encode())
             else:
@@ -68,6 +68,7 @@ class MyServer(socketserver.BaseRequestHandler):
                 handle(data)
             elif agreement == "Node_Leader":
                 self.Node_Leader(data)
+                #print("运行完成")
             elif agreement == "MASSAGE_PRINT":
                 print("IDLead向你发来明文消息",data)
             elif agreement == "MASSAGE_DECODE":
@@ -83,7 +84,7 @@ class MyServer(socketserver.BaseRequestHandler):
         if not a:
             print("协商有误")
         rec_ID[IDLead] = temp
-        print("完成秘钥协商：秘钥为:",rec_ID[IDLead]) 
+        print("Leader与{}完成秘钥协商：秘钥为:".format(IDLead),rec_ID[IDLead]) 
     #对于AS_Node的处理
     def AS_Node_connect(self,data):
         abc = str_to_string(data)
@@ -155,7 +156,7 @@ def check_send(sk):
             massage_AS.append(MAC_Leader) 
             en_data = SM4_temp.encryptSM4(temp_key[0],str(massage_AS)+temp_key[1])#
             sk.send(("AS_Node+"+en_data).encode('utf-8'))
-            print("成功发送",massage_AS)
+            #print("成功发送",massage_AS)
 
 
 
@@ -168,7 +169,7 @@ def check_send(sk):
 def handle(data):
     data = SM4_temp.decryptSM4(rec_ID[IDas][0],data)
     data = data[:-32]
-    print("收到的消息：",data)
+    #print("收到的消息：",data)
     list_new= str_to_string_toolong(data)
     list_new = list_new[0]
     temp = [IDLead,IDas,list_new[2]]
@@ -177,7 +178,7 @@ def handle(data):
         print("MAC_L校验通过")
     for i in list_new[2]:
         receve_massage[i[0]] = i
-    print(receve_massage)
+    #print(receve_massage)
             
             
 
